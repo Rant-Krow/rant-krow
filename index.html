@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -748,10 +749,13 @@
 
     if(SHEET_WEBHOOK_URL){
       try{
+        const formBody = new URLSearchParams();
+        Object.entries(payload).forEach(([k, v]) => formBody.append(k, v));
         await fetch(SHEET_WEBHOOK_URL, {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(payload)
+          mode: 'no-cors', // hooks.airtable.com doesn't return CORS headers; avoid the browser blocking us
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, // CORS-safelisted, so no preflight is needed
+          body: formBody.toString()
         });
       }catch(err){
         console.error('could not reach sheet webhook', err);
