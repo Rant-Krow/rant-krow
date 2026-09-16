@@ -750,8 +750,7 @@
       try{
         await fetch(SHEET_WEBHOOK_URL, {
           method: 'POST',
-          mode: 'no-cors', // fire-and-forget; we don't need to read the response
-          headers: { 'Content-Type': 'text/plain' },
+          headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(payload)
         });
       }catch(err){
